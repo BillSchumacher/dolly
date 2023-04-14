@@ -112,15 +112,8 @@ def generate_response(
         response_pos = response_positions[0]
 
     if response_pos:
-        # Next find where "### End" is located.  The model has been trained to end its responses with this sequence
-        # (or actually, the token ID it maps to, since it is a special token).  We may not find this token, as the
-        # response could be truncated.  If we don't find it then just return everything to the end.  Note that
-        # even though we set eos_token_id, we still see the this token at the end.
-        end_pos = None
         end_positions = np.where(gen_tokens == end_key_token_id)[0]
-        if len(end_positions) > 0:
-            end_pos = end_positions[0]
-
+        end_pos = end_positions[0] if len(end_positions) > 0 else None
         decoded = tokenizer.decode(gen_tokens[response_pos + 1 : end_pos]).strip()
 
     return decoded

@@ -111,10 +111,11 @@ def load_model(
     pretrained_model_name_or_path: str = DEFAULT_INPUT_MODEL, *, gradient_checkpointing: bool = False
 ) -> AutoModelForCausalLM:
     logger.info(f"Loading model for {pretrained_model_name_or_path}")
-    model = AutoModelForCausalLM.from_pretrained(
-        pretrained_model_name_or_path, trust_remote_code=True, use_cache=False if gradient_checkpointing else True
+    return AutoModelForCausalLM.from_pretrained(
+        pretrained_model_name_or_path,
+        trust_remote_code=True,
+        use_cache=not gradient_checkpointing,
     )
-    return model
 
 
 def get_model_tokenizer(
