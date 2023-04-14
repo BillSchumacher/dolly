@@ -100,8 +100,7 @@ local_output_dir = os.path.join(local_training_root, checkpoint_dir_name)
 dbfs_output_dir = os.path.join(dbfs_output_root, checkpoint_dir_name)
 
 num_gpus_flag = ""
-num_gpus = dbutils.widgets.get("num_gpus")
-if num_gpus:
+if num_gpus := dbutils.widgets.get("num_gpus"):
     num_gpus = int(num_gpus)
     num_gpus_flag = f"--num_gpus={num_gpus}"
 
@@ -149,6 +148,7 @@ instructions = [
 
 # Use the model to generate responses for each of the instructions above.
 for instruction in instructions:
-    response = generate_response(instruction, model=model, tokenizer=tokenizer)
-    if response:
+    if response := generate_response(
+        instruction, model=model, tokenizer=tokenizer
+    ):
         print(f"Instruction: {instruction}\n\n{response}\n\n-----------\n")
